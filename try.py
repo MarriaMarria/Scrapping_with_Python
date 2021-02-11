@@ -8,40 +8,57 @@ from bs4 import BeautifulSoup
 
 URL = 'https://fr.indeed.com/jobs?q=Developpeur+Cloud&l=Paris+%2875%29'
 page = requests.get(URL)
+# pprint.pprint(page.content)
 
 # soup = BeautifulSoup(page.content, 'html.parser')
 soup = BeautifulSoup(page.content, 'lxml')
 
 # taking the div with all results
 results = soup.find(id='resultsCol')
-
+# print(results.prettify())
 
 # jobtitle is a class which is associated to open positions
-# jobtitle = results.findAll('a', {'class' : 'jobtitle'})
+# jobtitle = results.findAll('a', {'class':'jobtitle'})
 # for title in jobtitle:
     # print(title.prettify())
     # print('_______________')
-    # prints the <a> elements with the class jobtitle
+
 
 # finds job titles 15
 # job_result = soup.findAll('a', {'class': 'jobtitle'})
 # for job in job_result:
 #     title = job.get('title')
-#     print(title)
-#     print('_______________')
+#     # print(title)
+#     # print('_______________')
 
-# finds when annonce posted
+# # finding date 15
 # date_result = soup.findAll('span', {'class': 'date'})
 # for date in date_result:
 #     print(date.text)
-# print(date_result)
+# # print(date_result)
 
+# not good as prints both company names smtimes and position
 # jobtitle2 = soup.findAll('a', {'class': 'turnstileLink'},)
+# print(jobtitle2)
+# for each in jobtitle2: 
+#     print (str(each.get_text()))
+    #prints again jobtitles
+
+
+# company = jobtitle2.a.text
+# print(company)
 # for job in jobtitle2:
-#     print(job.text) # I tried to see companies as they are in <a> tag's text field...But I get againg the job positions
+#     title = job.get('title')
+#     print(title)
+#     print('_______________')
 
-# gives me 15 locations
-locations = results.find_all(['div', 'span'], {'class' : 'location'})
-for location in locations:
-    print(location.text)
+# 1st file with urls
 
+# df = pd.DataFrame(data={"href": list_hrefs})
+# df.to_csv("data_file_3.csv", sep=',',index=False)
+
+# # 2nd file with id:s and labels
+
+# pairs = {'id': list_ids, 'label': list_labels}
+# df = pd.DataFrame.from_dict(pairs)
+# df.to_csv('ids_labels_3.csv')
