@@ -2,63 +2,58 @@ import requests
 import pprint
 from bs4 import BeautifulSoup
 
-# This code performs an HTTP request to the given URL. It retrieves the 
-# HTML data that the server sends back and stores that data in a Python object.
-
-
-URL = 'https://fr.indeed.com/jobs?q=Developpeur+Cloud&l=Paris+%2875%29'
+URL = 'https://fr.indeed.com/emplois?q=developpeur+web&l=Paris+%2875%29'
 page = requests.get(URL)
-# pprint.pprint(page.content)
-
-# soup = BeautifulSoup(page.content, 'html.parser')
 soup = BeautifulSoup(page.content, 'lxml')
 
 # taking the div with all results
 results = soup.find(id='resultsCol')
-# print(results.prettify())
+a_links = results.find_all('a', class_ = 'jobtitle turnstileLink')
+# print(len(a_links))
+# print(a_links[0])
+a_link = a_links[0]
+href = a_link['href']
+title = a_link['title']
+print(f"printing href: {href}")
+print('_________________')
+print(f"printing title: {title}")
 
-# jobtitle is a class which is associated to open positions
-# jobtitle = results.findAll('a', {'class':'jobtitle'})
-# for title in jobtitle:
-    # print(title.prettify())
-    # print('_______________')
-
-
-# finds job titles 15
-# job_result = soup.findAll('a', {'class': 'jobtitle'})
+# soup.find('a')['href']
 # for job in job_result:
-#     title = job.get('title')
-#     # print(title)
-#     # print('_______________')
-
-# # finding date 15
-# date_result = soup.findAll('span', {'class': 'date'})
-# for date in date_result:
-#     print(date.text)
-# # print(date_result)
-
-# not good as prints both company names smtimes and position
-# jobtitle2 = soup.findAll('a', {'class': 'turnstileLink'},)
-# print(jobtitle2)
-# for each in jobtitle2: 
-#     print (str(each.get_text()))
-    #prints again jobtitles
-
-
-# company = jobtitle2.a.text
-# print(company)
-# for job in jobtitle2:
 #     title = job.get('title')
 #     print(title)
 #     print('_______________')
 
-# 1st file with urls
 
-# df = pd.DataFrame(data={"href": list_hrefs})
-# df.to_csv("data_file_3.csv", sep=',',index=False)
+# jobtitle is a class which is associated to open positions
+# jobtitle = results.findAll('a', {'class' : 'jobtitle'})
+# for title in jobtitle:
+    # print(title.prettify())
+    # print('_______________')
+    # prints the <a> elements with the class jobtitle
 
-# # 2nd file with id:s and labels
+# finds job titles 15
+job_result = soup.findAll('a', {'class': 'jobtitle'})
+# for job in job_result:
+#     title = job.get('title')
+#     print(title)
+#     print('_______________')
 
-# pairs = {'id': list_ids, 'label': list_labels}
-# df = pd.DataFrame.from_dict(pairs)
-# df.to_csv('ids_labels_3.csv')
+# finds when annonce posted
+# date_result = soup.findAll('span', {'class': 'date'})
+# for date in date_result:
+    # print(date.text)
+# print(date_result)
+
+# jobtitle2 = soup.findAll('a', {'class': 'turnstileLink'},)
+# for job in jobtitle2:
+#     print(job.text) # I tried to see companies as they are in <a> tag's text field...But I get againg the job positions
+
+jobtitle2 = soup.findAll('a')
+print(len(jobtitle2))
+print(jobtitle2[100])
+
+# gives me 15 locations
+# locations = results.find_all(['div', 'span'], {'class' : 'location'})
+# for location in locations:
+# print(location.text)

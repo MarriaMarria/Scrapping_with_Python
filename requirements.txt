@@ -1,2 +1,7 @@
 beautifulsoup4 == 4.9.3
 requests == 2.25.1
+# python-dev-tools
+# lxml == 3.5.0
+
+
+
