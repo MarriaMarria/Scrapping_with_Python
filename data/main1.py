@@ -9,54 +9,43 @@ soup = BeautifulSoup(page.content, 'html.parser')
 results = soup.find(id='resultsCol')
 a_links = results.find_all('a', class_ = 'jobtitle turnstileLink')
 
-db = sqlite3.connect("scrap.db")
+db = sqlite3.connect("scrapIt.db")
 cursor = db.cursor()
-# cursor.execute("CREATE TABLE offers (id INTEGER PRIMARY KEY, title varchar(250) NOT NULL, company varchar(250) NOT NULL, location varchar(250) NOT NULL, published varcher(250))")
-# db.commit()
+# cursor.execute("CREATE TABLE offers1 (title varchar(250) NOT NULL, company varchar(250) NOT NULL, location varchar(250) NOT NULL, published varcher(250))")
+db.commit()
 
 title_list = []
 locations_list = []
 date_lists = []
 href_list = []
 
-for x in range(0, len(title_list)):
-    cursor.execute("INSERT INTO offers VALUES (?, ?, ?, ?, ?)", (null, title_list[x], href_list[x], locations_list[x], date_lists[x]))
-    x = x + 1
-    
-db.commit()
-db.close()
-
-
-
-# creates table
 
 def find_and_store_links():
 
     for link in a_links:
         href = link.get('href')
         href_list.append(href)
+
+    return href_list
     # print(f"Href is: https://indeed.fr{href}")
     # print('_______________________________')
-
-
 
 def find_and_store_titles():
 
     for title in a_links:
         title = title.get('title')
         title_list.append(title)
-        return title_list
-            #print(f"Job title is: {title}")
 
+    return title_list
+            #print(f"Job title is: {title}")
 
 def find_locations():
 
     locations = results.find_all(['div', 'span'], {'class': 'location'})
     for location in locations:
         locations_list.append(location.text)
-        return locations_list
+    return locations_list
     #print(locations_list)
-
 
 # finds when annonce posted
 def date_when_posted():
@@ -64,7 +53,45 @@ def date_when_posted():
     date_result = results.findAll('span', {'class': 'date'})
     for date in date_result:
         date_lists.append(date.text)
-        return date_lists
+    return date_lists
+
+find_and_store_titles()
+find_and_store_links()
+find_locations()
+date_when_posted()
+
+print(href_list)
+
+def insert_data():
+    db = sqlite3.connect('scrapIt.db') 
+    cursor = db.cursor() 
+
+    for x in range(0, len(title_list)):
+
+        cursor.execute("INSERT INTO offers1 VALUES (?, ?, ?, ?)", (title_list[x], href_list[x], locations_list[x], date_lists[x]))
+        x = x + 1
+    
+    db.commit()
+    db.close()
+
+
+insert_data()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # print(href_list)
     # fetch the data
@@ -74,17 +101,17 @@ def date_when_posted():
 #     db = sqlite3.connect('scrap.db') 
 #     db = db.cursor() 
 
-#     db.execute("SELECT * FROM offers")
-#     fetched = db.fetchall()
-#     print("Total rows are:  ", len(fetched))
-#     print("Printing each row")
-# #     for row in fetched:
-# #         print("Title: ", row[0])
-# #         print("Company: ", row[1])
-# #         print("Location: ", row[2])
-# #         print("Published: ", row[3])
-# #         print("Published: ", row[3])
-# #         print("\n")
+# db.execute("SELECT * FROM offers1")
+# fetched = db.fetchall()
+# print("Total rows are:  ", len(fetched))
+# print("Printing each row")
+#     for row in fetched:
+#         print("Title: ", row[0])
+#         print("Company: ", row[1])
+#         print("Location: ", row[2])
+#         print("Published: ", row[3])
+#         print("Published: ", row[3])
+#         print("\n")
 
 #     db.commit()
 #     db.close()
